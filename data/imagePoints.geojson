@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+                                                                                
+"features": [
+{ "type": "Feature", "properties": { "NAME": "[Group 9]-IMG_1426_IMG_1447-22 images", "LAYER": "Picture", "IMAGE_LINK": "data/[Group 9]-IMG_1426_IMG_1447-22 images.jpg", "TIMESTAMP": "2015:04:02 10:36:53", "ELEVATION": "514.6 m" }, "geometry": { "type": "Point", "coordinates": [ 121.156169722222231, 17.386728888888889 ] } },
+{ "type": "Feature", "properties": { "NAME": "[Group 44]-IMG_2228_IMG_2257-30 images", "LAYER": "Picture", "IMAGE_LINK": "data/[Group 44]-IMG_2228_IMG_2257-30 images.jpg", "TIMESTAMP": "2015:04:02 11:59:49", "ELEVATION": "521.9 m" }, "geometry": { "type": "Point", "coordinates": [ 121.148824166666671, 17.382979166666669 ] } },
+{ "type": "Feature", "properties": { "NAME": "[Group 56]-IMG_2937_IMG_2982-46 images", "LAYER": "Picture", "IMAGE_LINK": "data/[Group 56]-IMG_2937_IMG_2982-46 images.jpg", "TIMESTAMP": "2015:04:02 12:44:51", "ELEVATION": "537.8 m" }, "geometry": { "type": "Point", "coordinates": [ 121.144108333333335, 17.379699444444444 ] } }
+]
+}

@@ -1,0 +1,5 @@
+@media (max-width:678px){
+	.esri-leaflet-logo, .leaflet-control-attribution{
+		display:none;
+	}
+}

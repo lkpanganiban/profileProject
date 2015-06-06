@@ -12,8 +12,8 @@
 .googleEarth-theme .leaflet-control.elevation .axis line,
 .googleEarth-theme .leaflet-control.elevation .axis path{
 	fill:none;
-	stroke:black;
-	stroke-width:2;
+	stroke:#727272;
+	stroke-width:0.5;
 }
 
 .googleEarth-theme .axis text{
@@ -21,19 +21,18 @@
 
 }
 
-.googleEarth-theme rect{
-	fill:white;
-}
-
 .googleEarth-theme .leaflet-control.elevation .area{
-	fill:rgba(222, 0, 0, 0.5);
+	/*fill:rgba(222, 0, 0, 0.5);*/
+	fill:rgba(245, 206, 206, 0.81);
+	stroke: #6B0909;
+	stroke-width: 3;
 
 }
 
 .googleEarth-theme .leaflet-control.elevation .mouse-focus-line{
 	pointer-events:none;
 	stroke-width:1;
-	stroke:rgba(222, 0, 0, 0.62);
+	stroke:#000;
 }
 
 .googleEarth-theme .leaflet-control.elevation .elevation-toggle{
@@ -55,15 +54,27 @@
 }
 
 .googleEarth-theme .leaflet-control.elevation .mouse-drag{
-	fill:rgba(235, 0, 0, 0.7);
+	fill:rgba(240, 149, 149, 0.47);
 }
 
 .googleEarth-theme .leaflet-overlay-pane .height-focus{
-	stroke:rgba(222, 0, 0, 0.92);
-	fill:rgba(222, 0, 0, 0.92);
+	stroke:#ef5350;
+	fill:#ef5350;
 }
 
 .googleEarth-theme .leaflet-overlay-pane .height-focus.line{
 	pointer-events:none;
 	stroke-width:2;
+}
+
+/*Custom IDs*/
+#elev_rect{
+	fill:none;
+}
+
+.mouse-focus-label-y{
+	stroke:red;
+}
+.mouse-focus-label-x{
+	stroke:white;
 }

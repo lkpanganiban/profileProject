@@ -51,6 +51,7 @@ L.Control.Elevation = L.Control.extend({
             .interpolate(opts.interpolation)
             .x(function(d) {
                 var xDiagCoord = x(d.dist);
+                //console.log(d);
                 d.xDiagCoord = xDiagCoord;
                 return xDiagCoord;
             })
@@ -60,6 +61,8 @@ L.Control.Elevation = L.Control.extend({
             });
 
         var container = this._container = L.DomUtil.create("div", "elevation");
+            //added id to the div container
+            container.id="elev_control";
 
         this._initToggle();
 
@@ -91,9 +94,12 @@ L.Control.Elevation = L.Control.extend({
         var background = this._background = g.append("rect")
             .attr("width", this._width())
             .attr("height", this._height())
+            .attr("id","elev_rect")
             .style("fill", "none")
             .style("stroke", "none")
             .style("pointer-events", "all");
+
+
 
         if (L.Browser.touch) {
 
@@ -179,6 +185,8 @@ L.Control.Elevation = L.Control.extend({
             this._dragRectangle.attr("width", x2 - x1)
                 .attr("x", x1);
         }
+
+       // console.log("_drawDragRectangle_fired!");
 
     },
 
@@ -318,6 +326,7 @@ L.Control.Elevation = L.Control.extend({
     },
 
     _expand: function() {
+    
         this._container.className = this._container.className.replace(' elevation-collapsed', '');
     },
 
@@ -361,9 +370,10 @@ L.Control.Elevation = L.Control.extend({
             .call(d3.svg.axis()
                 .scale(this._y)
                 .ticks(this.options.yTicks)
+                .tickSize(-(this._width()),0,0)
                 .orient("left"))
             .append("text")
-            .attr("x", -45)
+            .attr("x", "-2.65em")
             .attr("y", 3)
             .style("text-anchor", "end")
             .text("m");
@@ -375,12 +385,13 @@ L.Control.Elevation = L.Control.extend({
             .call(d3.svg.axis()
                 .scale(this._x)
                 .ticks(this.options.xTicks)
+                .tickSize(-(this._height()),0,0)
                 .orient("bottom"))
             .append("text")
             .attr("x", this._width() + 20)
             .attr("y", 15)
             .style("text-anchor", "end")
-            .text("km");
+            .text("m");
     },
 
     _updateAxis: function() {
@@ -468,7 +479,9 @@ L.Control.Elevation = L.Control.extend({
                 this._mouseHeightFocusLabel = heightG.append("svg:text")
                     .attr("class", "height-focus-label")
                     .attr('id', 'profile-label')
-                    .style("pointer-events", "none");
+                    .style("pointer-events", "none")
+                    .attr("stroke","white")
+                    .attr("fill","white");
 
             }
 
@@ -516,7 +529,7 @@ L.Control.Elevation = L.Control.extend({
                 var s = new L.LatLng(coords[i][1], coords[i][0]);
                 var e = new L.LatLng(coords[i ? i - 1 : 0][1], coords[i ? i - 1 : 0][0]);
                 var newdist = s.distanceTo(e);
-                dist = dist + Math.round(newdist / 1000 * 100000) / 100000;
+                dist = dist + Math.round(newdist * 100000) / 100000;
                 ele = ele < coords[i][2] ? coords[i][2] : ele;
                 data.push({
                     dist: dist,
@@ -663,7 +676,7 @@ L.Control.Elevation = L.Control.extend({
             .text(numY + " m");
         this._focuslabelY.attr("y", this._height() - 5)
             .attr("x", xCoordinate)
-            .text(numX + " km");
+            .text(numX + " m");
     },
 
     _applyData: function() {

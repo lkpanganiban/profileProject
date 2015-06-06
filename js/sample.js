@@ -92,7 +92,6 @@ el.addTo(map);
 var gjl = L.geoJson(null,{
         onEachFeature: el.addData.bind(el)});
 $.getJSON("data/Path.geojson",function(data){
-    console.log("data loaded");
     gjl.addData(data);
     gjl.addTo(map);
 });
@@ -105,9 +104,9 @@ var imageData = L.geoJson(null);
 $.getJSON("data/imagePoints.geojson", function (data) {
     imageData.addData(data);
 
-    var mark_1 = L.circleMarker(imageData.getLayers()[0]._latlng).addTo(map);
-    var mark_2 = L.circleMarker(imageData.getLayers()[1]._latlng).addTo(map);
-    var mark_3 = L.circleMarker(imageData.getLayers()[2]._latlng).addTo(map);
+    var mark_1 = L.circleMarker(imageData.getLayers()[0]._latlng, {color: "red"}).addTo(map);
+    var mark_2 = L.circleMarker(imageData.getLayers()[1]._latlng, {color: "red"}).addTo(map);
+    var mark_3 = L.circleMarker(imageData.getLayers()[2]._latlng, {color: "red"}).addTo(map);
 
     $('#imageModal img').on('click',function(){
         $("#imageModal").hide();

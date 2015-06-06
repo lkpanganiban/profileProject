@@ -101,8 +101,6 @@ $('svg.background').find('rect').css("fill","white");
 
 //Image Loop
 
-
-
 var imageData = L.geoJson(null);
 $.getJSON("data/imagePoints.geojson", function (data) {
     imageData.addData(data);
@@ -146,3 +144,8 @@ $("#elev_rect").css("fill","rgba(176, 150, 150, 0.08);");
 $("#elev_rect").css("opacity","0.25");
 
 
+// Project Area Image Overlay
+var projectArea = 'data/Layer0.png',
+    imageBounds = [[17.33024057518417,121.077867273394],[17.42196043519033,121.2084673756794]];
+
+    L.imageOverlay(projectArea, imageBounds).addTo(map);

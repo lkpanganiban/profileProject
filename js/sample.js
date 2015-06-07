@@ -88,25 +88,42 @@ el.addTo(map);
     
 // });
 
-// Sample Data
+
+// Project Area Image Overlay
+var projectArea = 'data/Layer0.png',
+    imageBounds = [[17.33024057518417,121.077867273394],[17.42196043519033,121.2084673756794]],
+    kml = L.imageOverlay(projectArea, imageBounds).addTo(map);
+
+// Sample Line Data
 var gjl = L.geoJson(null,{
         onEachFeature: el.addData.bind(el)});
-$.getJSON("data/Path.geojson",function(data){
+
+$.ajax({
+  url: "data/Path.geojson",
+  dataType: 'json',
+  async: false,
+  success: function(data) {
     gjl.addData(data);
     gjl.addTo(map);
+  }
 });
+
 
 $('svg.background').find('rect').css("fill","white");
 
 //Image Loop
 
 var imageData = L.geoJson(null);
-$.getJSON("data/imagePoints.geojson", function (data) {
+var mark_1, mark_3, mark_2;
+$.ajax({
+  url: "data/imagePoints.geojson",
+  dataType: 'json',
+  async: false,
+  success: function(data) {
     imageData.addData(data);
-
-    var mark_1 = L.circleMarker(imageData.getLayers()[0]._latlng, {color: "red"}).addTo(map);
-    var mark_2 = L.circleMarker(imageData.getLayers()[1]._latlng, {color: "red"}).addTo(map);
-    var mark_3 = L.circleMarker(imageData.getLayers()[2]._latlng, {color: "red"}).addTo(map);
+    mark_1 = L.circleMarker(imageData.getLayers()[0]._latlng, {color: "red"}).addTo(map);
+    mark_2 = L.circleMarker(imageData.getLayers()[1]._latlng, {color: "red"}).addTo(map);
+    mark_3 = L.circleMarker(imageData.getLayers()[2]._latlng, {color: "red"}).addTo(map);
 
     $('#imageModal img').on('click',function(){
         $("#imageModal").hide();
@@ -124,10 +141,9 @@ $.getJSON("data/imagePoints.geojson", function (data) {
         $("#imageModal img").attr("src",imageData.getLayers()[2].feature.properties.IMAGE_LINK);
         $("#imageModal").show();
     });
-
-
-
+  }
 });
+
 
 function windowResize(){
     $(window).resize(function() {
@@ -142,9 +158,17 @@ windowResize();
 $("#elev_rect").css("fill","rgba(176, 150, 150, 0.08);");
 $("#elev_rect").css("opacity","0.25");
 
+var imagePoints = L.layerGroup([mark_1, mark_2, mark_3]);
+var linePath = L.layerGroup([gjl]);
 
-// Project Area Image Overlay
-var projectArea = 'data/Layer0.png',
-    imageBounds = [[17.33024057518417,121.077867273394],[17.42196043519033,121.2084673756794]];
+var overlay = {
+    "Geotagged Points": imagePoints,
+    "Project Line": linePath,
+    "KML Image": kml
+};
+var base = {
+    "Esri": esri
+}
+L.control.layers(base, overlay,{collapsed:false} ).addTo(map);
 
-    L.imageOverlay(projectArea, imageBounds).addTo(map);
+$(".leaflet-control-layers-selector").attr("checked", true);

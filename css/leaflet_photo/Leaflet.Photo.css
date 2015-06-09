@@ -18,10 +18,25 @@
 	color: #555;
 	background-color: #fff;
 	border-radius: 8px;
-	height: 12px;
-	min-width: 12px;
-	line-height: 12px;
+	height: 15px;
+	min-width: 15px;
+	line-height: 10px;
 	text-align: center;
 	padding: 3px;
 	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
 }
+
+/*.leaflet-marker-photo b {
+	position: absolute;
+	top: -7px;
+	right: -11px;
+	color: #555;
+	background-color: #fff;
+	border-radius: 4px;
+	height: 6px;
+	min-width: 6px;
+	line-height: 6px;
+	text-align: center;
+	padding: 1px;
+	box-shadow: 0 1px 7px rgba(0,0,0,0.4);
+}*/

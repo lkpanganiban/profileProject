@@ -15,12 +15,12 @@ newZoom.addTo(map);
 // 	service = new L.TileLayer(url, {subdomains:"1234",attribution: attr});
 
 //initialize ESRI services
-var esri =   L.esri.basemapLayer('Imagery');
-var esriLabel = L.esri.basemapLayer('ImageryLabels');
+//var esri =   L.esri.basemapLayer('Imagery');
+//var esriLabel = L.esri.basemapLayer('ImageryLabels');
 
 //add to map ESRI services
-esri.addTo(map);
-esriLabel.addTo(map);
+//esri.addTo(map);
+//esriLabel.addTo(map);
 
 var width = $(document).width();
 var height = ($(document).height() - 20)/2.5;
@@ -65,42 +65,99 @@ var projectArea = 'data_pasil/Layer0.png',
     imageBounds = [[17.33024057518417,121.077867273394],[17.42196043519033,121.2084673756794]],
     kml = L.imageOverlay(projectArea, imageBounds).addTo(map);
 
-//PhotoLayer
-var photoLayer = L.photo.cluster(/*{ spiderfyDistanceMultiplier: 1 }*/).on('click', function (evt) {
-        evt.layer.bindPopup(L.Util.template('<img src="{url}"/></a><p>{caption}</p>', evt.layer.photo), {
-            className: 'leaflet-popup-photo',
-            minWidth: 400
-        }).openPopup();
+//Project Bounding Box
+//bbox style
+var bboxStyle = {
+    "stroke": "cyan",
+    "weight": 1,
+    "opacity": 0.65,
+    "color":"cyan"
+};
+//bbox geojson
+var bbox = L.geoJson(null,{
+        style:bboxStyle
     });
-
 $.ajax({
-  url: "data_pasil/imagePoints.geojson",
+  url: "data_pasil/bounding_box.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
-    var photos=[];
-    var photo_data = data.features;
-    console.log(photo_data.length);
-
-    for(var i=0; i<photo_data.length;i++){
-        var url =photo_data[i].properties.NAME;
-        //console.log(url);
-        photos.push({
-            lat:photo_data[i].geometry.coordinates[1],
-            lng:photo_data[i].geometry.coordinates[0],
-            url:photo_data[i].properties.IMAGE_LINK,
-            caption:photo_data[i].properties.NAME+" : "+ photo_data[i].properties.TIMESTAMP,
-            //thumbnail:"data/thumbnails/tn_"+photo_data[i].properties.NAME+".jpg"
-            thumbnail:photo_data[i].properties.IMAGE_LINK
-        });
-    }
-    photoLayer.add(photos).addTo(map);
-    //console.log(photos)
+    bbox.addData(data);
+    bbox.addTo(map);
   }
 });
 
+//Pasil B & C Labels
+//Pasil B
+var pBLabelsStyle = {
+    "stroke": "cyan",
+    "weight": 3,
+    "opacity": 1,
+    "color":"white"
+};
+//Pasil B geojson
+var pBLabels = L.geoJson(null,{
+        style:pBLabelsStyle
+    });
+$.ajax({
+  url: "data_pasil/PasilB.geojson",
+  dataType: 'json',
+  async: false,
+  success: function(data) {
+    pBLabels.addData(data);
+    pBLabels.addTo(map);
+  }
+});
+//Pasil C
+var pCLabelsStyle = {
+    "stroke": "cyan",
+    "weight": 3,
+    "opacity": 1,
+    "color":"blue"
+};
+//Pasil C geojson
+var pCLabels = L.geoJson(null,{
+        style:pCLabelsStyle
+    });
+$.ajax({
+  url: "data_pasil/PasilC.geojson",
+  dataType: 'json',
+  async: false,
+  success: function(data) {
+    pCLabels.addData(data);
+    pCLabels.addTo(map);
+  }
+});
 
-// Profile Lines
+//Map Labels
+var noIcon = L.icon({
+    iconUrl: 'images/marker-icon.png',
+    iconSize: [0, 0],
+    iconAnchor: [10, 10],
+    labelAnchor: [6, 0] // as I want the label to appear 2px past the icon (10 + 2 - 6)
+});
+var pasilB = L.marker([17.359820088709625, 121.11238165403213],{
+        icon:noIcon
+    })
+    .bindLabel('Pasil B', { 
+        noHide: true,
+        direction:'left',
+        offset:[-70,-70],
+        className:'pasilB'
+    })
+    .addTo(map);
+var pasilC = L.marker([17.38933482419361, 121.17330383427426],{
+        icon:noIcon
+    })
+    .bindLabel('Pasil C', { 
+        noHide: true,
+        direction:'right',
+        offset:[-70,50],
+        className:'pasilB'
+    })
+    .addTo(map);
+
+// Profile Lines-
 //initialize elevation control: centerline
 var center_elev = L.control.elevation({  
     position: "bottomleft",
@@ -131,7 +188,7 @@ var center_elev = L.control.elevation({
 center_elev.addTo(map);
 //Centerline Style
 var centerStyle = {
-    "stroke": "#white",
+    "stroke": "white",
     "weight": 2,
     "opacity": 0.65,
     "color":"red"
@@ -152,7 +209,7 @@ $.ajax({
 });
 //initialize elevation control: left
 var left_elev = L.control.elevation({  
-    position: "topleft",
+    position: "bottomleft",
     theme: "steelblue-theme",
     width: width,
     height: height,
@@ -202,7 +259,7 @@ $.ajax({
 
 //initialize elevation control: right
 var right_elev = L.control.elevation({  
-    position: "topleft",
+    position: "bottomleft",
     theme: "lime-theme",
     width: width,
     height: height,
@@ -251,54 +308,50 @@ $.ajax({
 });
 // Profile Lines
 
-//Image Loop
-var imageData = L.geoJson(null);
-//var mark_1, mark_3, mark_2;
-$.ajax({
+//PhotoLayer
+var photoLayer = L.photo.cluster({ spiderfyDistanceMultiplier: 1 }).on('click', function (evt) {
+        evt.layer.bindPopup(L.Util.template('<img src="{url}"/></a><p>{caption}</p>', evt.layer.photo), {
+            className: 'leaflet-popup-photo',
+            minWidth: 400,
+            closeOnClick:true,
+            closeButton:false
+        }).openPopup();
+    });
+
+    $.ajax({
   url: "data_pasil/imagePoints.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
-    imageData.addData(data);
+    var photos=[];
+    var photo_data = data.features;
+    //console.log(photo_data.length);
+
+    for(var i=0; i<photo_data.length;i++){
+        var url =photo_data[i].properties.NAME;
+        //console.log(url);
+        photos.push({
+            lat:photo_data[i].geometry.coordinates[1],
+            lng:photo_data[i].geometry.coordinates[0],
+            url:photo_data[i].properties.IMAGE_LINK,
+            caption:photo_data[i].properties.NAME+" : "+ photo_data[i].properties.TIMESTAMP,
+            thumbnail:"\'data/thumbnails/tn_"+photo_data[i].properties.NAME+".JPG\'"
+            //thumbnail:photo_data[i].properties.IMAGE_LINK
+        });
+    }
+    photoLayer.add(photos).addTo(map);
+    //console.log(photos)
   }
 });
 
-//var imagePoints = L.layerGroup([mark_1, mark_2, mark_3]);
-
-
-
-    // reqwest({
-    //     url: 'http://kulturnett2.delving.org/api/search?query=*%3A*&format=jsonp&rows=100&pt=59.936%2C10.76&d=1&qf=abm_contentProvider_text%3ADigitaltMuseum',
-    //     type: 'jsonp',
-    //     success: function (data) {
-    //         var photos = [];
-    //         data = data.result.items;
-
-    //         for (var i = 0; i < data.length; i++) {
-    //             var photo = data[i].item.fields;
-    //             if (photo.abm_latLong) {
-    //                 var pos = photo.abm_latLong[0].split(',');
-    //                 photos.push({
-    //                     lat: pos[0],
-    //                     lng: pos[1],
-    //                     url: photo.delving_thumbnail[0],
-    //                     caption: (photo.delving_description ? photo.delving_description[0] : '') + ' - Kilde: <a href="' + photo.delving_landingPage + '">' + photo.delving_collection + '</a>',
-    //                     thumbnail: photo.delving_thumbnail[0]
-    //                 });
-    //             }   
-    //         }
-
-    //         photoLayer.add(photos).addTo(map);
-    //         //map.fitBounds(photoLayer.getBounds());
-    //     }
-    //     });
-//PhotoLayer
 
 //Overlay Final LayerGroups
 var centerPath = L.layerGroup([centerLine]);
 var leftPath = L.layerGroup([left_Bank]);
 var rightPath = L.layerGroup([right_Bank]);
 var imageLayer = L.layerGroup([photoLayer]);
+var bboxLayer = L.layerGroup([bbox]);
+var pasilLables = L.layerGroup([pBLabels, pCLabels, pasilB, pasilC]);
 //Overlay Final LayerGroups
 
 //Grouped overlay Control
@@ -313,6 +366,10 @@ var groupedOverlays = {
     },  
     "Geotagged Images":{
         "Images Layer":imageLayer
+    },
+    "Other Layers":{
+        "Bounding Box":bboxLayer,
+        "Pasil B & C":pasilLables
     }
 };
 
@@ -323,19 +380,79 @@ goControl.addTo(map);
 $(".leaflet-control-layers-selector").attr("checked", true);
 //Grouped overlay Control
 
-//button tab for elev profiles
-$("#elev_control").prepend("<ul class='list-inline' id='elev_btns'><li><button class='btn center_btn' id='center'><h5 class='tab_btn_text'>Centerline</h5></button></li><li><button class='btn left_btn' id='left'><h5 class='tab_btn_text'>Left Bank</h5></button></li><li><button class='btn right_btn' id='right'><h5 class='tab_btn_text'>Right Bank</h5></button></li></ul>");
-//button tab for elev profiles
+//Changing elev profile
+var profileFlag = 0;
+
+
 
 //elev profile switch
 $('#center').on("click", function(){
-    alert("center");
+    if(profileFlag == 0){
+
+    }else if(profileFlag==1){
+        left_elev.removeFrom(map);
+        center_elev.addTo(map);
+        profileFlag=0;
+        $("#left_l").css("display","none");
+        $("#center_l").css("display","block");
+    }else{
+        right_elev.removeFrom(map);
+        center_elev.addTo(map);
+        profileFlag=0;
+        $("#right_l").css("display","none");
+        $("#center_l").css("display","block");
+    }
+
+    //additional formatting to re-render
+    $("#elev_rect").css("fill","rgba(176, 150, 150, 0.08);");
+    $("#elev_rect").css("opacity","0.25");
+    $('svg.background').find('rect').css("fill","white");
 });
+
 $('#left').on("click", function(){
-    alert("left");
+    if(profileFlag == 1){
+
+    }else if(profileFlag==2){
+        right_elev.removeFrom(map);
+        left_elev.addTo(map);
+        profileFlag=1;
+        $("#right_l").css("display","none");
+        $("#left_l").css("display","block");
+    }else{
+        center_elev.removeFrom(map);
+        left_elev.addTo(map);
+        profileFlag=1;
+        $("#center_l").css("display","none");
+        $("#left_l").css("display","block");
+    }
+    
+    //additional formatting to re-render
+    $("#elev_rect").css("fill","rgba(176, 150, 150, 0.08);");
+    $("#elev_rect").css("opacity","0.25");
+    $('svg.background').find('rect').css("fill","white");
 });
+
 $('#right').on("click", function(){
-    alert("right");
+    if(profileFlag == 2){
+
+    }else if(profileFlag==0){
+        center_elev.removeFrom(map);
+        right_elev.addTo(map);
+        profileFlag=2;
+        $("#center_l").css("display","none");
+        $("#right_l").css("display","block");
+    }else{
+        left_elev.removeFrom(map);
+        right_elev.addTo(map);
+        profileFlag=2;
+        $("#left_l").css("display","none");
+        $("#right_l").css("display","block");
+    }
+    
+    //additional formatting to re-render
+    $("#elev_rect").css("fill","rgba(176, 150, 150, 0.08);");
+    $("#elev_rect").css("opacity","0.25");
+    $('svg.background').find('rect').css("fill","white");
 });
 //elev profile switch
 

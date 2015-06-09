@@ -19,6 +19,8 @@
     <link href="css/leaflet_cluster/MarkerCluster.css" rel="stylesheet"/>
     <!--Leaflet Photo-->
     <link href="css/leaflet_photo/Leaflet.Photo.css" rel="stylesheet"/>
+    <!--Lealfet Label-->
+    <link href="css/leaflet_label/leaflet.label.css" rel="stylesheet"/>
     <!--Custom CSS-->
     <link href="css/app.css" rel="stylesheet" />
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -87,16 +89,19 @@
     background-color: #B73333;
     border-color: #A42E2E;
     margin-left:0.5em;
+    margin-top: 0.5em;
   }
   .left_btn{
     background-color: #319632;
     border-color: #46A42E;
     margin-left:0.5em;
+    margin-top: 0.5em;
   }
   .right_btn{
     background-color: #AB980D;
     border-color: #9CA512;
     margin-left:0.5em;
+    margin-top: 0.5em;
   }
   .center_btn:hover{
     background-color: rgba(188, 98, 98, 0.55);
@@ -110,12 +115,44 @@
     background-color: rgba(171, 152, 13, 0.55);
     border-color: #9CA512;
   }
+  .leaflet-popup-content img{
+    width:30em;
+    height:auto;
+    margin:0.5em auto;
+  }
+  .pasilB{
+    font-size:2em;
+    -webkit-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    -ms-transform:rotate(90deg);
+    -o-transform:rotate(90deg);
+    filter: progid:DXImage.Transform.Microsoft.BasicImage(rotation=3);
+  }
+  .p_labels{
+    color: white;
+    text-shadow: 1px 1px 1px black;
+  }
+  #elev_labels h3{
+    margin-top:0.15em;
+  }
+
   </style>
   <body>
 
   <div class="container ontop pull-left">
     <div class="title_div"><h2 class="white">Pasil B & C Hydroelectric Power Project</h2></div>
+    <ul class='list-inline' id='elev_btns'>
+        <li><button class='btn center_btn btn-disabled' id='center'><h5 class='tab_btn_text'>Centerline</h5></button></li>
+        <li><button class='btn left_btn' id='left'><h5 class='tab_btn_text'>Left Bank</h5></button></li>
+        <li><button class='btn right_btn' id='right'><h5 class='tab_btn_text'>Right Bank</h5></button></li>
+    </ul>
+    <ul class='list-inline' id='elev_labels'>
+        <li id="center_l"><h3 class="p_labels" >River Centerline</h3></li>
+        <li id="left_l" style="display:none;"><h3 class="p_labels" >Left Bank</h3></li>
+        <li id="right_l" style="display:none;"><h3 class="p_labels" >Right Bank</h3></li>
+    </ul>
   </div>
+
   <div id ="map"></div>
  
   <div class="modal" id="imageModal" tabindex="-1" role="dialog">
@@ -148,7 +185,9 @@
     <script src="js/leaflet_cluster/leaflet.markercluster.js"></script>
     <!--Leaflet Photo-->
     <script src="js/leaflet_photo/Leaflet.Photo.js"></script>
-    <script src="js/reqwest.min.js"></script>
+    <!--Leaflet Photo-->
+    <script src="js/leaflet_label/leaflet.label.js"></script>
+    
     
 
     <!-- Main Map-->

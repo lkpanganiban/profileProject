@@ -1,7 +1,7 @@
 L.Photo = L.FeatureGroup.extend({
 	options: {
 		icon: {						
-			iconSize: [40, 40]
+			iconSize: [10, 10]
 		}
 	},
 
@@ -45,16 +45,17 @@ if (L.MarkerClusterGroup) {
 	L.Photo.Cluster = L.MarkerClusterGroup.extend({
 		options: {
 			featureGroup: L.photo,		
-			maxClusterRadius: 100,		
+			maxClusterRadius: 5,		
 			showCoverageOnHover: false,
+			//disableClusteringAtZoom:16,
 			iconCreateFunction: function(cluster) {
 				return new L.DivIcon(L.extend({
 					className: 'leaflet-marker-photo', 
-					html: '<div style="background-image: url(' + cluster.getAllChildMarkers()[0].photo.thumbnail + ');"></div>​<b>' + cluster.getChildCount() + '</b>'
+					html: '<div class="leaflet_photo"style="background-image: url(' + cluster.getAllChildMarkers()[0].photo.thumbnail + ');"></div>​<b>' + cluster.getChildCount() + '</b>'
 				}, this.icon));
 		   	},	
 			icon: {						
-				iconSize: [40, 40]
+				iconSize: [13, 13]
 			}		   		
 		},
 

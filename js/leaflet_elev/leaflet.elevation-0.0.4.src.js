@@ -490,14 +490,14 @@ L.Control.Elevation = L.Control.extend({
             this._mouseHeightFocus.attr("x1", layerpoint.x)
                 .attr("x2", layerpoint.x)
                 .attr("y1", layerpoint.y)
-                .attr("y2", normalizedY*2)//multiplier to make line within screen
+                .attr("y2", normalizedY)//multiplier to make line within screen
                 .style("visibility", "visible");
 
             this._pointG.attr("transform", "translate(" + layerpoint.x + "," + layerpoint.y + ")")
                 .style("visibility", "visible");
 
             this._mouseHeightFocusLabel.attr("x", layerpoint.x)
-                .attr("y", normalizedY*2)//multiplier to make line within screen
+                .attr("y", normalizedY)//multiplier to make line within screen
                 .text(numY + " m")
                 .style("visibility", "visible");
 
@@ -733,6 +733,7 @@ L.Control.Elevation = L.Control.extend({
         this._y.domain([0, 1]);
         this._updateAxis();
     }
+
 
 });
 

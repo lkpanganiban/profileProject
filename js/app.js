@@ -316,9 +316,9 @@ var cs_elev = L.control.elevation({
     height: height/2,
     margins: {
         top: 30,
-        right: 100,
+        right: 30,
         bottom: 30,
-        left: 60
+        left: 30
     },
     useHeightIndicator: true,
     interpolation: "linear",
@@ -342,11 +342,16 @@ var csStyle={
     "opacity": 1,
     "color":"black"
 };
+var cselev_flag = 0;
+cs_elev.onAdd(function(map){
+    alert("csss");
+
+});
 //cs json
 function onEachFeature(feature, layer) {
     
-    
     layer.on('click',function(e){
+        $(".leaflet-top.leaflet-left div").remove();
         cs_elev.clear();
         cs_elev.addData.bind(cs_elev);
         cs_elev.addData(feature);

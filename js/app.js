@@ -15,12 +15,12 @@ newZoom.addTo(map);
 // 	service = new L.TileLayer(url, {subdomains:"1234",attribution: attr});
 
 //initialize ESRI services
-//var esri =   L.esri.basemapLayer('Imagery');
-//var esriLabel = L.esri.basemapLayer('ImageryLabels');
+var esri =   L.esri.basemapLayer('Imagery');
+var esriLabel = L.esri.basemapLayer('ImageryLabels');
 
 //add to map ESRI services
-//esri.addTo(map);
-//esriLabel.addTo(map);
+esri.addTo(map);
+esriLabel.addTo(map);
 
 var width = $(document).width();
 var height = ($(document).height() - 20)/2.5;
@@ -61,7 +61,7 @@ $(window).on('resize',function(){location.reload();});
 
 
 // Project Area Image Overlay
-var projectArea = 'data_pasil/Layer0.png',
+var projectArea = 'data/Layer0.png',
     imageBounds = [[17.33024057518417,121.077867273394],[17.42196043519033,121.2084673756794]],
     kml = L.imageOverlay(projectArea, imageBounds).addTo(map);
 
@@ -78,7 +78,7 @@ var bbox = L.geoJson(null,{
         style:bboxStyle
     });
 $.ajax({
-  url: "data_pasil/bounding_box.geojson",
+  url: "data/bounding_box.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
@@ -100,7 +100,7 @@ var pBLabels = L.geoJson(null,{
         style:pBLabelsStyle
     });
 $.ajax({
-  url: "data_pasil/PasilB.geojson",
+  url: "data/PasilB.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
@@ -120,7 +120,7 @@ var pCLabels = L.geoJson(null,{
         style:pCLabelsStyle
     });
 $.ajax({
-  url: "data_pasil/PasilC.geojson",
+  url: "data/PasilC.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
@@ -199,7 +199,7 @@ var centerLine = L.geoJson(null,{
         style:centerStyle
     });
 $.ajax({
-  url: "data_pasil/river.geojson",
+  url: "data/river.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
@@ -248,7 +248,7 @@ var left_Bank = L.geoJson(null,{
         style:leftStyle
     });
 $.ajax({
-  url: "data_pasil/channel_l.geojson",
+  url: "data/channel_l.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
@@ -298,7 +298,7 @@ var right_Bank = L.geoJson(null,{
         style:rightStyle
     });
 $.ajax({
-  url: "data_pasil/channel_r.geojson",
+  url: "data/channel_r.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
@@ -319,7 +319,7 @@ var photoLayer = L.photo.cluster({ spiderfyDistanceMultiplier: 1 }).on('click', 
     });
 
     $.ajax({
-  url: "data_pasil/imagePoints.geojson",
+  url: "data/imagePoints.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
@@ -335,7 +335,7 @@ var photoLayer = L.photo.cluster({ spiderfyDistanceMultiplier: 1 }).on('click', 
             lng:photo_data[i].geometry.coordinates[0],
             url:photo_data[i].properties.IMAGE_LINK,
             caption:photo_data[i].properties.NAME+" : "+ photo_data[i].properties.TIMESTAMP,
-            thumbnail:"\'data/thumbnails/tn_"+photo_data[i].properties.NAME+".JPG\'"
+            thumbnail:"\'data/thumbnails/tn_"+photo_data[i].properties.NAME+".jpg\'"
             //thumbnail:photo_data[i].properties.IMAGE_LINK
         });
     }

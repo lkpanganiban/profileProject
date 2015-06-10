@@ -398,16 +398,6 @@ csProfile.on('click', function(e){console.log(e)});
 csProfile.addData(geojson);
 csProfile.addTo(map);
 
-console.log(geojson);
-// console.log(geojson.features.length);
-
-
-
-
-
-
-
-
 //Cross Section Lines
 
 //PhotoLayer

@@ -18,7 +18,7 @@ newZoom.addTo(map);
 var esri =   L.esri.basemapLayer('Imagery');
 var esriLabel = L.esri.basemapLayer('ImageryLabels');
 
-//add to map ESRI services
+// //add to map ESRI services
 esri.addTo(map);
 esriLabel.addTo(map);
 
@@ -61,7 +61,7 @@ $(window).on('resize',function(){location.reload();});
 
 
 // Project Area Image Overlay
-var projectArea = 'data/Layer0.png',
+var projectArea = ' data/Layer0.png',
     imageBounds = [[17.33024057518417,121.077867273394],[17.42196043519033,121.2084673756794]],
     kml = L.imageOverlay(projectArea, imageBounds).addTo(map);
 
@@ -78,7 +78,7 @@ var bbox = L.geoJson(null,{
         style:bboxStyle
     });
 $.ajax({
-  url: "data/bounding_box.geojson",
+  url: " data/bounding_box.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
@@ -100,7 +100,7 @@ var pBLabels = L.geoJson(null,{
         style:pBLabelsStyle
     });
 $.ajax({
-  url: "data/PasilB.geojson",
+  url: " data/PasilB.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
@@ -120,7 +120,7 @@ var pCLabels = L.geoJson(null,{
         style:pCLabelsStyle
     });
 $.ajax({
-  url: "data/PasilC.geojson",
+  url: " data/PasilC.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
@@ -199,7 +199,7 @@ var centerLine = L.geoJson(null,{
         style:centerStyle
     });
 $.ajax({
-  url: "data/river.geojson",
+  url: " data/river.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
@@ -248,7 +248,7 @@ var left_Bank = L.geoJson(null,{
         style:leftStyle
     });
 $.ajax({
-  url: "data/channel_l.geojson",
+  url: " data/channel_l.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
@@ -298,7 +298,7 @@ var right_Bank = L.geoJson(null,{
         style:rightStyle
     });
 $.ajax({
-  url: "data/channel_r.geojson",
+  url: " data/channel_r.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
@@ -307,6 +307,103 @@ $.ajax({
   }
 });
 // Profile Lines
+
+//Cross Section Lines
+var cs_elev = L.control.elevation({  
+    position: "topleft",
+    theme: "lime-theme",
+    width: width/3,
+    height: height/2,
+    margins: {
+        top: 30,
+        right: 100,
+        bottom: 30,
+        left: 60
+    },
+    useHeightIndicator: true,
+    interpolation: "linear",
+    hoverNumber: {
+        decimalsX: 3,
+        decimalsY: 0,
+        formatter: undefined
+    },
+    xTicks: 10,
+    yTicks: 5,
+    collapsed: false,
+    yAxisMin: undefined,
+    yAxisMax: undefined,
+    forceAxisBounds: false
+
+    });
+//CS Style
+var csStyle={
+    "stroke": "#ff7800",
+    "weight": 3,
+    "opacity": 1,
+    "color":"black"
+};
+//cs json
+function onEachFeature(feature, layer) {
+    
+    
+    layer.on('click',function(e){
+        cs_elev.clear();
+        cs_elev.addData.bind(cs_elev);
+        cs_elev.addData(feature);
+        cs_elev.addTo(map);
+        
+    });
+}
+map.on('click', function(){
+    cs_elev.removeFrom(map);
+});
+var csProfile = L.geoJson(null,{
+    //onEachFeature:cs_elev.addData.bind(cs_elev),
+    style:csStyle,
+    onEachFeature: onEachFeature
+});
+
+
+
+
+//create linestring json
+//profile data container
+var geojson = {"name":"NewFeatureType","type":"FeatureCollection","features":[]};
+for (var j = 0; j<122;j++){
+    $.ajax({
+        url:"data/cross_section_geojson/"+String(j)+".json",
+        dataType: 'json',
+        async: false,
+        success: function(data){
+            //console.log(data);
+            // console.log(geojson);
+            // //csProfile.addData(data);
+            //for(var i = 0; i<data.length;i++){
+                geojson.features.push({"type":"Feature","geometry":{"type":"MultiLineString","coordinates":[data]},"properties":{"line_id":j}})
+            }
+            // csProfile.addData(data);
+            // csProfile.addTo(map);
+
+
+    });
+
+}
+
+csProfile.on('click', function(e){console.log(e)});
+csProfile.addData(geojson);
+csProfile.addTo(map);
+
+console.log(geojson);
+// console.log(geojson.features.length);
+
+
+
+
+
+
+
+
+//Cross Section Lines
 
 //PhotoLayer
 var photoLayer = L.photo.cluster({ spiderfyDistanceMultiplier: 1 }).on('click', function (evt) {
@@ -319,7 +416,7 @@ var photoLayer = L.photo.cluster({ spiderfyDistanceMultiplier: 1 }).on('click', 
     });
 
     $.ajax({
-  url: "data/imagePoints.geojson",
+  url: " data/imagePoints.geojson",
   dataType: 'json',
   async: false,
   success: function(data) {
@@ -352,6 +449,7 @@ var rightPath = L.layerGroup([right_Bank]);
 var imageLayer = L.layerGroup([photoLayer]);
 var bboxLayer = L.layerGroup([bbox]);
 var pasilLables = L.layerGroup([pBLabels, pCLabels, pasilB, pasilC]);
+var crossLayers = L.layerGroup([csProfile])
 //Overlay Final LayerGroups
 
 //Grouped overlay Control
@@ -363,6 +461,9 @@ var groupedOverlays = {
         "Centerline": centerPath,
         "Right Bank":rightPath,
         "Left Bank":leftPath
+    },
+    "Cross-sections":{
+        "Cross Sections":crossLayers
     },  
     "Geotagged Images":{
         "Images Layer":imageLayer

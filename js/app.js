@@ -29,37 +29,6 @@ var height = ($(document).height() - 20)/2.5;
 //catching window resize
 $(window).on('resize',function(){location.reload();});
 
-
-//add elevation control to map
-// var geojson;
-
-// //Create temporary geojson file
-// var geojson = {"name":"NewFeatureType","type":"FeatureCollection"
-// ,"features":[
-// {"type":"Feature","geometry":{"type":"LineString","coordinates":[[169.13693,-44.696476,296],[169.134602,-44.69764,295]]},"properties":null}
-// ]}
-// ;
-// //put looped data here
-// var coord_arr=[];
-
-// //real data
-// var data_path = $.getJSON("data/try.geojson",function(data){
-
-//     for(var i = 0; i<data.features.length;i++){
-//         coord_arr.push([data.features[i].geometry.coordinates[0][0],data.features[i].geometry.coordinates[0][1], data.features[i].properties.GRID_CODE]);
-//     }
-
-//     geojson.features[0].geometry.coordinates = coord_arr;
-
-//     var gjl = L.geoJson(null,{
-//         onEachFeature: el.addData.bind(el)});
-
-//     gjl.addData(geojson);
-//     gjl.addTo(map);
-    
-// });
-
-
 // Project Area Image Overlay
 var projectArea = ' data/Layer0.png',
     imageBounds = [[17.33024057518417,121.077867273394],[17.42196043519033,121.2084673756794]],
@@ -290,7 +259,7 @@ var rightStyle = {
     "stroke": "#ff7800",
     "weight": 2,
     "opacity": 0.65,
-    "color":"yellow"
+    "color":"green"
 };
 //Right Bank Json
 var right_Bank = L.geoJson(null,{
@@ -342,16 +311,10 @@ var csStyle={
     "opacity": 1,
     "color":"black"
 };
-var cselev_flag = 0;
-cs_elev.onAdd(function(map){
-    alert("csss");
-
-});
 //cs json
 function onEachFeature(feature, layer) {
-    
     layer.on('click',function(e){
-        $(".leaflet-top.leaflet-left div").remove();
+        $('.leaflet-top.leaflet-left div').remove();
         cs_elev.clear();
         cs_elev.addData.bind(cs_elev);
         cs_elev.addData(feature);
@@ -359,55 +322,93 @@ function onEachFeature(feature, layer) {
         
     });
 }
+
 map.on('click', function(){
     cs_elev.removeFrom(map);
 });
+
 var csProfile = L.geoJson(null,{
-    //onEachFeature:cs_elev.addData.bind(cs_elev),
     style:csStyle,
     onEachFeature: onEachFeature
 });
-
-
+$.ajax({
+    url:"data/supp_cross_section.geojson",
+    dataType: 'json',
+    async: false,
+    success: function(data){
+            csProfile.addData(data);
+            csProfile.addTo(map);
+        }
+});
 
 
 //create linestring json
 //profile data container
-var geojson = {"name":"NewFeatureType","type":"FeatureCollection","features":[]};
-for (var j = 0; j<122;j++){
-    $.ajax({
-        url:"data/cross_section_geojson/"+String(j)+".json",
-        dataType: 'json',
-        async: false,
-        success: function(data){
-            //console.log(data);
-            // console.log(geojson);
-            // //csProfile.addData(data);
-            //for(var i = 0; i<data.length;i++){
-                geojson.features.push({"type":"Feature","geometry":{"type":"MultiLineString","coordinates":[data]},"properties":{"line_id":j}})
-            }
-            // csProfile.addData(data);
-            // csProfile.addTo(map);
 
+//Priority cross sections
+//Priority Sections
+var prio_elev = L.control.elevation({  
+    position: "topleft",
+    theme: "lime-theme",
+    width: width/3,
+    height: height/2,
+    margins: {
+        top: 30,
+        right: 30,
+        bottom: 30,
+        left: 30
+    },
+    useHeightIndicator: true,
+    interpolation: "linear",
+    hoverNumber: {
+        decimalsX: 3,
+        decimalsY: 0,
+        formatter: undefined
+    },
+    xTicks: 10,
+    yTicks: 5,
+    collapsed: false,
+    yAxisMin: undefined,
+    yAxisMax: undefined,
+    forceAxisBounds: false
 
     });
 
+var cs_prio = {
+    "stroke": "#ff7800",
+    "weight": 3,
+    "opacity": 1,
+    "color":"#FF9800"
+};
+var csPrio = L.geoJson(null,{
+    style:cs_prio,
+    onEachFeature: onEachPriority
+});
+$.ajax({
+    url:"data/main_cross_section.geojson",
+    dataType: 'json',
+    async: false,
+    success: function(data){
+        csPrio.addData(data);
+        csPrio.addTo(map);
+    }
+});
+
+function onEachPriority(feature, layer) {
+    layer.on('click',function(e){
+        $('.leaflet-top.leaflet-left div').remove();
+        prio_elev.clear();
+        prio_elev.addData.bind(prio_elev);
+        prio_elev.addData(feature);
+        prio_elev.addTo(map);
+        
+    });
 }
 
-csProfile.on('click', function(e){console.log(e)});
-csProfile.addData(geojson);
-csProfile.addTo(map);
-
-console.log(geojson);
-// console.log(geojson.features.length);
-
-
-
-
-
-
-
-
+map.on('click', function(){
+    prio_elev.removeFrom(map);
+});
+//profile data container
 //Cross Section Lines
 
 //PhotoLayer
@@ -438,11 +439,9 @@ var photoLayer = L.photo.cluster({ spiderfyDistanceMultiplier: 1 }).on('click', 
             url:photo_data[i].properties.IMAGE_LINK,
             caption:photo_data[i].properties.NAME+" : "+ photo_data[i].properties.TIMESTAMP,
             thumbnail:"\'data/thumbnails/tn_"+photo_data[i].properties.NAME+".jpg\'"
-            //thumbnail:photo_data[i].properties.IMAGE_LINK
         });
     }
     photoLayer.add(photos).addTo(map);
-    //console.log(photos)
   }
 });
 
@@ -454,7 +453,8 @@ var rightPath = L.layerGroup([right_Bank]);
 var imageLayer = L.layerGroup([photoLayer]);
 var bboxLayer = L.layerGroup([bbox]);
 var pasilLables = L.layerGroup([pBLabels, pCLabels, pasilB, pasilC]);
-var crossLayers = L.layerGroup([csProfile])
+var crossLayers = L.layerGroup([csProfile]);
+var prioCSlayers = L.layerGroup([csPrio]);
 //Overlay Final LayerGroups
 
 //Grouped overlay Control
@@ -468,7 +468,8 @@ var groupedOverlays = {
         "Left Bank":leftPath
     },
     "Cross-sections":{
-        "Cross Sections":crossLayers
+        "Main":prioCSlayers,
+        "Supplementary":crossLayers
     },  
     "Geotagged Images":{
         "Images Layer":imageLayer
@@ -577,6 +578,6 @@ windowResize();
 
 $("#elev_rect").css("fill","rgba(176, 150, 150, 0.08);");
 $("#elev_rect").css("opacity","0.25");
-
 $('svg.background').find('rect').css("fill","white");
+$(".leaflet-top.leaflet-right").css("margin-top", "0em");
 //Additional formatting

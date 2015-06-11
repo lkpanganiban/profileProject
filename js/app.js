@@ -15,12 +15,12 @@ newZoom.addTo(map);
 // 	service = new L.TileLayer(url, {subdomains:"1234",attribution: attr});
 
 //initialize ESRI services
-// var esri =   L.esri.basemapLayer('Imagery');
-// var esriLabel = L.esri.basemapLayer('ImageryLabels');
+var esri =   L.esri.basemapLayer('Imagery');
+var esriLabel = L.esri.basemapLayer('ImageryLabels');
 
 // //add to map ESRI services
-// esri.addTo(map);
-// esriLabel.addTo(map);
+esri.addTo(map);
+esriLabel.addTo(map);
 
 var width = $(document).width();
 var height = ($(document).height() - 20)/2.5;

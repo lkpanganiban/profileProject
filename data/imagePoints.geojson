@@ -54,7 +54,7 @@
 { "type": "Feature", "properties": { "NAME": "IMG_3095", "LAYER": "Picture", "IMAGE_LINK": "data/images/IMG_3095.jpg", "TIMESTAMP": "2015:04:03 09:50:44", "ELEVATION": "496.5 m" }, "geometry": { "type": "Point", "coordinates": [ 121.17270055555556, 17.39341 ] } },
 { "type": "Feature", "properties": { "NAME": "IMG_3101", "LAYER": "Picture", "IMAGE_LINK": "data/images/IMG_3101.jpg", "TIMESTAMP": "2015:04:03 09:51:08", "ELEVATION": "494.5 m" }, "geometry": { "type": "Point", "coordinates": [ 121.17274722222223, 17.393451666666667 ] } },
 { "type": "Feature", "properties": { "NAME": "IMG_3114", "LAYER": "Picture", "IMAGE_LINK": "data/images/IMG_3114.jpg", "TIMESTAMP": "2015:04:03 09:54:54", "ELEVATION": null }, "geometry": { "type": "Point", "coordinates": [ 121.17312777777778, 17.393309444444444 ] } },
-{ "type": "Feature", "properties": { "NAME": "IMG_3115", "LAYER": "Picture", "IMAGE_LINK": "data/images/IMG_3115.jpg", "TIMESTAMP": "2015:04:03 09:55:00", "ELEVATION": null }, "geometry": { "type": "Point", "coordinates": [ 121.17309166666666, 17.393285277777778 ] } },
+{ "type": "Feature", "properties": { "NAME": "IMG_3115", "LAYER": "Picture", "IMAGE_LINK": "data/images/IMG_3115.jpg", "TIMESTAMP": "2015:04:03 09:55:00", "ELEVATION": null }, "geometry": { "type": "Point", "coordinates": [ 121.17309166666666, 17.393285277777778 ] } }
 
 ]
 }

@@ -15,12 +15,12 @@ newZoom.addTo(map);
 // 	service = new L.TileLayer(url, {subdomains:"1234",attribution: attr});
 
 //initialize ESRI services
-var esri =   L.esri.basemapLayer('Imagery');
-var esriLabel = L.esri.basemapLayer('ImageryLabels');
+// var esri =   L.esri.basemapLayer('Imagery');
+// var esriLabel = L.esri.basemapLayer('ImageryLabels');
 
 // //add to map ESRI services
-esri.addTo(map);
-esriLabel.addTo(map);
+// esri.addTo(map);
+// esriLabel.addTo(map);
 
 var width = $(document).width();
 var height = ($(document).height() - 20)/2.5;
@@ -179,7 +179,7 @@ $.ajax({
 //initialize elevation control: left
 var left_elev = L.control.elevation({  
     position: "bottomleft",
-    theme: "steelblue-theme",
+    theme: "lime-theme",
     width: width,
     height: height,
     margins: {
@@ -229,7 +229,7 @@ $.ajax({
 //initialize elevation control: right
 var right_elev = L.control.elevation({  
     position: "bottomleft",
-    theme: "lime-theme",
+    theme: "steelblue-theme",
     width: width,
     height: height,
     margins: {
@@ -259,7 +259,7 @@ var rightStyle = {
     "stroke": "#ff7800",
     "weight": 2,
     "opacity": 0.65,
-    "color":"green"
+    "color":"yellow"
 };
 //Right Bank Json
 var right_Bank = L.geoJson(null,{
@@ -458,6 +458,15 @@ var crossLayers = L.layerGroup([csProfile]);
 var prioCSlayers = L.layerGroup([csPrio]);
 //Overlay Final LayerGroups
 
+//collapsing conditions
+/* Larger screens get expanded layer control and visible sidebar */
+// if (document.body.clientWidth <= 767) {
+//   var isCollapsed = true;
+// } else {
+//   var isCollapsed = false;
+// }
+//collapsing conditions
+
 //Grouped overlay Control
 var groupedOverlays = {
     "Satellite Image": {
@@ -481,7 +490,7 @@ var groupedOverlays = {
     }
 };
 
-var baseLayers = {};var options=   {};// neccessary variables to make control visible
+var baseLayers = {};var options= {};// neccessary variables to make control visible
 
 var goControl = L.control.groupedLayers(baseLayers, groupedOverlays, options);
 goControl.addTo(map);
@@ -495,15 +504,20 @@ var profileFlag = 0;
 
 //elev profile switch
 $('#center').on("click", function(){
+    $('.leaflet-top.leaflet-left div').remove();
     if(profileFlag == 0){
-
+        $('body').addClass('googleEarth-theme');
     }else if(profileFlag==1){
+        $('body').removeClass('lime-theme');
+        $('body').addClass('googleEarth-theme');
         left_elev.removeFrom(map);
         center_elev.addTo(map);
         profileFlag=0;
         $("#left_l").css("display","none");
         $("#center_l").css("display","block");
     }else{
+        $('body').removeClass('steelblue-theme');
+        $('body').addClass('googleEarth-theme');
         right_elev.removeFrom(map);
         center_elev.addTo(map);
         profileFlag=0;
@@ -518,15 +532,20 @@ $('#center').on("click", function(){
 });
 
 $('#left').on("click", function(){
+    $('.leaflet-top.leaflet-left div').remove();
     if(profileFlag == 1){
-
+        $('body').addClass('lime-theme');
     }else if(profileFlag==2){
+        $('body').removeClass('steelblue-theme');
+        $('body').addClass('lime-theme');
         right_elev.removeFrom(map);
         left_elev.addTo(map);
         profileFlag=1;
         $("#right_l").css("display","none");
         $("#left_l").css("display","block");
     }else{
+        $('body').removeClass('googleEarth-theme');
+        $('body').addClass('lime-theme');
         center_elev.removeFrom(map);
         left_elev.addTo(map);
         profileFlag=1;
@@ -541,15 +560,20 @@ $('#left').on("click", function(){
 });
 
 $('#right').on("click", function(){
+    $('.leaflet-top.leaflet-left div').remove();
     if(profileFlag == 2){
-
+        $('body').addClass('steelblue-theme');
     }else if(profileFlag==0){
+        $('body').removeClass('googleEarth-theme');
+        $('body').addClass('steelblue-theme');
         center_elev.removeFrom(map);
         right_elev.addTo(map);
         profileFlag=2;
         $("#center_l").css("display","none");
         $("#right_l").css("display","block");
     }else{
+        $('body').removeClass('lime-theme');
+        $('body').addClass('steelblue-theme');
         left_elev.removeFrom(map);
         right_elev.addTo(map);
         profileFlag=2;

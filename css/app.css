@@ -3,3 +3,11 @@
 		display:none;
 	}
 }
+
+.leaflet-top,.leaflet-bottom, .leaflet-left, .leaflet-right{
+	z-index:2;
+}
+
+.leaflet-top.leaflet-right{
+	z-index:3;
+}

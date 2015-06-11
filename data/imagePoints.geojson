@@ -65,9 +65,5 @@
 { "type": "Feature", "properties": { "OBJECTID": 10, "Path": "data/images/V4.JPG", "Name": "V4.JPG", "DateTime": "2015:03:25 13:30:36", "Direction": -9999.000000 }, "geometry": { "type": "Point", "coordinates": [ 121.15995250000003, 17.385832778000065, 528.61999999999534 ] } },
 { "type": "Feature", "properties": { "OBJECTID": 11, "Path": "data/images/W2.JPG", "Name": "W2.JPG", "DateTime": "2015:03:25 16:23:37", "Direction": -9999.000000 }, "geometry": { "type": "Point", "coordinates": [ 121.15689111100005, 17.385842500000024, 0.0 ] } },
 { "type": "Feature", "properties": { "OBJECTID": 12, "Path": "data/images/X1.JPG", "Name": "X1.JPG", "DateTime": "2015:03:25 15:22:55", "Direction": -9999.000000 }, "geometry": { "type": "Point", "coordinates": [ 121.15966222200007, 17.385687500000074, 0.0 ] } },
-{ "type": "Feature", "properties": { "OBJECTID": 13, "Path": "data/images/a 2 pasil.JPG", "Name": "a 2 pasil.JPG", "DateTime": "2015:03:25 10:07:17", "Direction": -9999.000000 }, "geometry": null },
-{ "type": "Feature", "properties": { "OBJECTID": 14, "Path": "data/images/a 3 pasil.JPG", "Name": "a 3 pasil.JPG", "DateTime": "2015:03:25 10:11:25", "Direction": -9999.000000 }, "geometry": null },
-{ "type": "Feature", "properties": { "OBJECTID": 15, "Path": "data/images/b 2 pasil.JPG", "Name": "b 2 pasil.JPG", "DateTime": "2015:03:25 10:07:08", "Direction": -9999.000000 }, "geometry": null },
-{ "type": "Feature", "properties": { "OBJECTID": 16, "Path": "data/images/d 3 pasil.JPG", "Name": "d 3 pasil.JPG", "DateTime": "2015a:03:25 11:22:40", "Direction": -9999.000000 }, "geometry": null }
 ]
 }
